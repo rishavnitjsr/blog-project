@@ -14,7 +14,7 @@ app.set('view engine','ejs');
 const port = 3000;
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
+  res.render('index');
 });
 
 app.listen(process.env.PORT || port, () => {

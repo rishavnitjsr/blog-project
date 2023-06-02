@@ -3,13 +3,21 @@
 <form action="/compose" method="post">
   <div class="form-group">
     <label>Title</label>
-    <input type="text" name="titlePost" class="form-control" />
+    <input
+      type="text"
+      name="titlePost"
+      class="form-control"
+      autocomplete="off"
+      autofocus
+      required
+    />
     <label>Post</label>
     <textarea
       name="contentPost"
       class="form-control"
       rows="5"
       cols="30"
+      required
     ></textarea>
   </div>
   <button type="submit" class="btn-primary btn">Publish</button>

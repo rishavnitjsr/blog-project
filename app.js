@@ -13,12 +13,29 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
+const posts = [];
+
 app.get('/',(req,res)=>{
-  res.render('home',{homeContent : homeStartingContent});
+  res.render('home',{homeContent : homeStartingContent, posts : posts});
 });
 
 app.get('/about',(req,res)=>{
   res.render('about',{aboutContent : aboutContent});
+});
+
+app.get('/compose',(req,res)=>{
+  res.render('compose');
+});
+
+app.post('/compose',(req,res) => {
+   const post = {
+    title: req.body.titlePost,
+    content: req.body.contentPost
+   };
+   
+   posts.push(post);
+
+   res.redirect("/");
 });
 
 app.get('/contact-us',(req,res)=>{

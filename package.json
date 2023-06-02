@@ -1,24 +1,17 @@
 {
-  "name": "blog-project",
+  "name": "ejs-challenge",
   "version": "1.0.0",
-  "description": "\"Daily Journal\"",
+  "description": "",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rishavnitjsr/blog-project.git"
-  },
-  "author": "Rishav Bajaj",
+  "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/rishavnitjsr/blog-project/issues"
-  },
-  "homepage": "https://github.com/rishavnitjsr/blog-project#readme",
   "dependencies": {
-    "body-parser": "^1.20.2",
-    "ejs": "^3.1.9",
-    "express": "^4.18.2"
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.3",
+    "lodash": "^4.17.11"
   }
 }

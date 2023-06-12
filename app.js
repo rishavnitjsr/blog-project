@@ -2,6 +2,16 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const _ = require("lodash");
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb+srv://rbonweb:r%40b0n%5FWeb3@cluster0.bjvh0ix.mongodb.net/blog-project');
+
+const postSchema = {
+ title: String,
+ content: String
+};
+
+const Post = mongoose.model("Post", postSchema);
 
 const homeStartingContent = "Lacus vel facilisis volutpat est velit egestas dui id ornare. Semper auctor neque vitae tempus quam. Sit amet cursus sit amet dictum sit amet justo. Viverra tellus in hac habitasse. Imperdiet proin fermentum leo vel orci porta. Donec ultrices tincidunt arcu non sodales neque sodales ut. Mattis molestie a iaculis at erat pellentesque adipiscing. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Ultrices vitae auctor eu augue ut lectus arcu bibendum at. Odio euismod lacinia at quis risus sed vulputate odio ut. Cursus mattis molestie a iaculis at erat pellentesque adipiscing.";
 const aboutContent = "Hac habitasse platea dictumst vestibulum rhoncus est pellentesque. Dictumst vestibulum rhoncus est pellentesque elit ullamcorper. Non diam phasellus vestibulum lorem sed. Platea dictumst quisque sagittis purus sit. Egestas sed sed risus pretium quam vulputate dignissim suspendisse. Mauris in aliquam sem fringilla. Semper risus in hendrerit gravida rutrum quisque non tellus orci. Amet massa vitae tortor condimentum lacinia quis vel eros. Enim ut tellus elementum sagittis vitae. Mauris ultrices eros in cursus turpis massa tincidunt dui.";
@@ -14,10 +24,10 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-const posts = [];
-
 app.get('/', (req, res) => {
-  res.render('home', { homeContent: homeStartingContent, posts: posts });
+  Post.find().then( foundPost =>{
+    res.render('home', { homeContent: homeStartingContent, posts: foundPost });
+  });
 });
 
 app.get('/about', (req, res) => {
@@ -29,25 +39,29 @@ app.get('/compose', (req, res) => {
 });
 
 app.post('/compose', (req, res) => {
-  const post = {
+  const post = new Post({
     title: req.body.titlePost,
     content: req.body.contentPost
-  };
-
-  posts.push(post);
-
-  res.redirect("/");
-});
-
-app.get('/post/:postTitle', (req, res) => {
-  const postTitle = _.lowerCase(req.params.postTitle);
-  posts.forEach((post) => {
-    let dbTitle = _.lowerCase(post.title);
-    if (dbTitle === postTitle) {
-      res.render('post', { postTitle: post.title, postContent: post.content });
-    }
+  });
+   post.save()
+  .then(() => {
+    res.redirect("/");
+  })
+  .catch((err) => {
+    // Handle the error here
+    console.error("Error while saving post:", err);
+    // You can redirect to an error page or display a specific error message to the user
+   // res.redirect("/error");
   });
 });
+
+app.get('/post/:postId', (req, res) => {
+  const requestedPostId = req.params.postId;
+
+  Post.findOne({_id: requestedPostId}).then(post => { 
+      res.render('post', { postTitle: post.title, postContent: post.content });
+    })
+  });
 
 app.get('/contact-us', (req, res) => {
   res.render('contact', { contactContent: contactContent });

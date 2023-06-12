@@ -7,7 +7,7 @@
 <p style="word-wrap: break-word">
   <% if(post.content.length>250){ %> <%= post.content.substring(0,250) + "..."
   %>
-  <a href="/post/<%= post.title %>">read more</a>
+  <a href="/post/<%=post._id%>">Read More</a>
 </p>
 <% }else{ %>
 <p style="word-wrap: break-word"><%= post.content %> <% } %></p>
